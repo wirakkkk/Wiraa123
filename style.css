@@ -1,0 +1,257 @@
+/* Font mirip iOS (San Francisco) */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(135deg, #0d0d0f, #1a1a1e); /* Gradient dark lebih dalam */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #ffffff; /* Teks putih */
+    overflow: hidden; /* Untuk background animasi */
+    position: relative;
+}
+
+/* Background animasi partikel (bintang jatuh sederhana) */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 50%, rgba(0, 122, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 0, 150, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(0, 255, 100, 0.1) 0%, transparent 50%);
+    animation: particleFloat 10s infinite linear; /* Animasi pelan */
+    z-index: -1;
+}
+
+@keyframes particleFloat {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(-100vh) rotate(360deg); }
+}
+
+/* Container utama */
+.container {
+    width: 100%;
+    max-width: 400px; /* Lebar seperti iPhone */
+    height: 90vh;
+    max-height: 700px;
+    background: rgba(20, 20, 25, 0.85); /* Transparan gelap lebih keren */
+    backdrop-filter: blur(25px); /* Blur lebih kuat untuk glassmorphism */
+    border-radius: 25px; /* Sudut lebih melengkung */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 122, 255, 0.3); /* Shadow dengan glow biru */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 20px;
+    box-sizing: border-box;
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Border transparan dengan glow */
+    position: relative;
+    z-index: 1;
+}
+
+/* Header */
+h1 {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0 0 20px 0;
+    color: #00d4ff; /* Biru neon */
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.5); /* Glow pada teks */
+}
+
+/* Area chat messages */
+#chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Jarak lebih besar */
+    scrollbar-width: none; /* Sembunyikan scrollbar di Firefox */
+    -ms-overflow-style: none; /* Sembunyikan scrollbar di IE/Edge */
+}
+
+#chat-messages::-webkit-scrollbar {
+    display: none; /* Sembunyikan scrollbar di Webkit */
+}
+
+/* Styling pesan (chat bubbles mirip iOS dark dengan efek keren) */
+.message {
+    max-width: 70%;
+    padding: 14px 18px;
+    border-radius: 20px; /* Sudut lebih melengkung */
+    font-size: 16px;
+    line-height: 1.5;
+    word-wrap: break-word;
+    position: relative;
+    animation: slideIn 0.5s ease-out; /* Animasi slide-in lebih keren */
+    align-self: flex-start; /* Semua pesan di kiri (seperti dari orang lain) */
+    background: rgba(35, 35, 40, 0.9); /* Abu-abu gelap transparan */
+    color: #ffffff;
+    margin-left: 10px; /* Jarak dari kiri */
+    transition: opacity 0.3s ease, box-shadow 0.3s ease; /* Transisi untuk hover */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); /* Shadow halus */
+}
+
+.message:hover {
+    opacity: 0.6; /* Lebih transparan saat hover */
+    box-shadow: 0 4px 16px rgba(0, 122, 255, 0.4); /* Glow biru saat hover */
+}
+
+/* Tail kecil di bubble (opsional, mirip iMessage) */
+.message::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: -10px;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-right-color: rgba(35, 35, 40, 0.9);
+    border-bottom: none;
+    border-left: none;
+}
+
+/* Animasi slide-in untuk pesan baru */
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-50px) scale(0.9); }
+    to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+/* Input container */
+.input-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.2); /* Garis atas transparan */
+    margin-top: 10px;
+}
+
+#message-input {
+    flex: 1;
+    padding: 14px 18px;
+    border: none;
+    border-radius: 25px; /* Sudut lebih melengkung */
+    background: rgba(35, 35, 40, 0.9); /* Abu-abu gelap transparan */
+    color: #ffffff;
+    font-size: 16px;
+    outline: none;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4), 0 0 10px rgba(0, 122, 255, 0.2); /* Shadow dalam dan glow */
+    transition: background 0.3s, opacity 0.3s, box-shadow 0.3s; /* Transisi halus */
+}
+
+#message-input:focus {
+    background: rgba(50, 50, 55, 0.95); /* Lebih terang saat focus */
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 212, 255, 0.5); /* Glow lebih kuat */
+}
+
+#message-input:hover {
+    opacity: 0.7; /* Efek transparan saat hover */
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4), 0 0 12px rgba(0, 122, 255, 0.3);
+}
+
+#send-button {
+    padding: 14px 24px;
+    background: linear-gradient(45deg, #007aff, #00d4ff); /* Gradient biru neon */
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s, opacity 0.3s, box-shadow 0.3s; /* Transisi dan efek klik */
+    box-shadow: 0 4px 12px rgba(0, 122, 255, 0.4); /* Glow awal */
+    animation: pulse 2s infinite; /* Pulse effect halus */
+}
+
+#send-button:hover {
+    background: linear-gradient(45deg, #0056cc, #0099cc); /* Gradient lebih gelap */
+    opacity: 0.8; /* Lebih transparan */
+    box-shadow: 0 6px 20px rgba(0, 212, 255, 0.6); /* Glow lebih kuat */
+}
+
+#send-button:active {
+    transform: scale(0.92); /* Efek klik lebih dramatis */
+}
+
+/* Animasi pulse untuk tombol */
+@keyframes pulse {
+    0%, 100% { box-shadow: 0 4px 12px rgba(0, 122, 255, 0.4); }
+    50% { box-shadow: 0 4px 16px rgba(0, 212, 255, 0.6); }
+}
+
+/* Responsif untuk mobile */
+@media (max-width: 480px) {
+    .container {
+        width: 95%;
+        height: 95vh;
+        border-radius: 0; /* Full screen di mobile */
+    }
+    .message {
+        max-width: 80%;
+    }
+    body::before {
+        animation-duration: 15s; /* Partikel lebih pelan di mobile */
+    }
+}
+/* Container untuk pesan dengan avatar */
+.message-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px; /* Jarak antara avatar dan bubble */
+    margin-bottom: 15px;
+    animation: slideIn 0.5s ease-out; /* Animasi sama seperti sebelumnya */
+}
+
+/* Styling avatar */
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* Bulat */
+    border: 2px solid rgba(0, 212, 255, 0.5); /* Border neon */
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.3); /* Glow halus */
+    transition: box-shadow 0.3s ease;
+}
+
+.avatar:hover {
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.6); /* Glow lebih kuat saat hover */
+}
+
+/* Bubble pesan (edit dari sebelumnya) */
+.message {
+    max-width: 70%;
+    padding: 14px 18px;
+    border-radius: 20px;
+    font-size: 16px;
+    line-height: 1.5;
+    word-wrap: break-word;
+    position: relative;
+    background: rgba(35, 35, 40, 0.9);
+    color: #ffffff;
+    transition: opacity 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.message:hover {
+    opacity: 0.6;
+    box-shadow: 0 4px 16px rgba(0, 122, 255, 0.4);
+}
+
+/* Tail kecil di bubble (sesuaikan posisi) */
+.message::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: -10px;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-right-color: rgba(35, 35, 40, 0.9);
+    border-bottom: none;
+    border-left: none;
+}
