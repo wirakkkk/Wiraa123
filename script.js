@@ -29,23 +29,10 @@ const sendButton = document.getElementById('send-button');
 // ======================
 let username = '';
 let avatarUrl = '';
+let uid = '';
 
 // Matikan tombol dulu sampai login selesai
 sendButton.disabled = true;
-
-// ======================
-// Login anonim
-// ======================
-auth.signInAnonymously()
-  .then(() => {
-    username = generateRandomName();
-    avatarUrl = generateRandomAvatar();
-    console.log('Logged in anonymously as:', auth.currentUser.uid, username);
-    sendButton.disabled = false;
-  })
-  .catch((error) => {
-    console.error('Error signing in anonymously:', error);
-  });
 
 // ======================
 // Generate nama & avatar acak
@@ -60,6 +47,42 @@ function generateRandomAvatar() {
   const style = styles[Math.floor(Math.random() * styles.length)];
   return `https://api.dicebear.com/7.x/${style}/svg?seed=${Math.random()}`;
 }
+
+// ======================
+// Login anonim tapi simpan UID
+// ======================
+async function loginAnon() {
+  uid = localStorage.getItem('anonUID');
+  username = localStorage.getItem('anonName');
+  avatarUrl = localStorage.getItem('anonAvatar');
+
+  if (uid && username && avatarUrl) {
+    // Gunakan data yang tersimpan
+    console.log('Login dengan UID tersimpan:', uid, username);
+    sendButton.disabled = false;
+  } else {
+    // Login anonim baru
+    try {
+      const userCredential = await auth.signInAnonymously();
+      const user = userCredential.user;
+      uid = user.uid;
+      username = generateRandomName();
+      avatarUrl = generateRandomAvatar();
+
+      // Simpan di localStorage
+      localStorage.setItem('anonUID', uid);
+      localStorage.setItem('anonName', username);
+      localStorage.setItem('anonAvatar', avatarUrl);
+
+      console.log('Login anonim baru:', uid, username);
+      sendButton.disabled = false;
+    } catch (error) {
+      console.error('Error login anonim:', error);
+    }
+  }
+}
+
+loginAnon();
 
 // ======================
 // Tampilkan pesan di chat
@@ -103,12 +126,12 @@ messagesRef.on('child_added', (snapshot) => {
 // ======================
 function sendMessage() {
   const messageText = messageInput.value.trim();
-  if (!messageText || !auth.currentUser) return;
+  if (!messageText || !uid) return;
 
   messagesRef.push({
     text: messageText,
     timestamp: Date.now(),
-    userId: auth.currentUser.uid,
+    userId: uid,
     name: username,
     avatar: avatarUrl
   });
@@ -117,7 +140,7 @@ function sendMessage() {
 }
 
 // ======================
-// 
+// Event listener tombol & Enter
 // ======================
 sendButton.addEventListener('click', sendMessage);
 messageInput.addEventListener('keypress', (e) => {
