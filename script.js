@@ -117,7 +117,7 @@ function sendMessage() {
 }
 
 // ======================
-// Event listener
+// 
 // ======================
 sendButton.addEventListener('click', sendMessage);
 messageInput.addEventListener('keypress', (e) => {
